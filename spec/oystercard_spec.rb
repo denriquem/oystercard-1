@@ -40,4 +40,32 @@ describe Oystercard do
     end
   end
 
+  describe "#touch_in" do
+    it "sets in_journey to true if successfully touched in" do
+      subject.touch_in
+      expect(subject.in_journey).to be true
+    end
+  end
+
+  describe "#touch_out" do
+    it "sets in_journey to false if successfully touched out" do
+      subject.touch_in
+      subject.touch_out
+      expect(subject.in_journey).to be false
+    end
+
+    it "raises an error if not currently in transit" do
+      subject.touch_in
+      subject.touch_out
+      expect { subject.touch_out }.to raise_error "You have not touched in"
+    end
+  end
+
+  describe "#in_journey?" do
+    it "returns true if you are currently in transit" do
+      subject.touch_in
+      expect(subject.in_journey).to be true
+    end
+  end
+
 end

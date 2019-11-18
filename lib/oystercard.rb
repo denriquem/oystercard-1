@@ -1,6 +1,6 @@
 class Oystercard
 
-  attr_reader :balance
+  attr_reader :balance, :in_journey
 
   DEFAULT_BALANCE = 0
   BALANCE_LIMIT = 90
@@ -17,4 +17,20 @@ class Oystercard
   def deduct(money)
     @balance -= money
   end
+
+  def touch_in
+    @in_journey = true if !in_journey?
+  end
+
+  def touch_out
+    raise "You have not touched in" if !in_journey?
+    @in_journey = false
+  end
+
+  private
+
+  def in_journey?
+    @in_journey
+  end
+
 end
