@@ -1,25 +1,12 @@
 require "oystercard"
 
 describe Oystercard do
-  describe "#initilize" do
 
-    it "has a balance of '0' by default" do
-      expect(subject.balance).to eq 0
-    end
-
-    it "returns balance given when user specifies balance" do
-      user_input = rand(5)
-      card = Oystercard.new(user_input)
-      expect(card.balance).to eq user_input
-    end
-  end
+  subject(:oystercard) { Oystercard.new(5) }
 
   describe "#top_up(money)" do
-    context "when starting with default balance of 0" do
-      it "increases the balance to 5 when top_up(5) is called" do
-        subject.top_up(5)
-        expect(subject.balance).to eq 5
-      end
+    it "increases the balance by 5 when top_up(5) is called" do
+      expect { subject.top_up(5) }. to change {subject.balance} .by(5)
     end
 
     context "when starting with a balance at full limit" do
@@ -44,6 +31,17 @@ describe Oystercard do
     it "sets in_journey to true if successfully touched in" do
       subject.touch_in
       expect(subject.in_journey).to be true
+    end
+
+    it "raises an error if you are already in transit" do
+      subject.touch_in
+      expect { subject.touch_in }.to raise_error "You never touched out"
+    end
+
+    it "raises an error if you do not have enough money" do
+      message = "You need a minimum of £#{Oystercard::MINIMUM_BALANCE} on your card"
+      card = Oystercard.new
+      expect { card.touch_in }.to raise_error message
     end
   end
 
