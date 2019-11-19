@@ -1,6 +1,6 @@
 class Oystercard
 
-  attr_reader :balance, :in_journey
+  attr_reader :balance, :entry_station
 
   DEFAULT_BALANCE = 0
   BALANCE_LIMIT = 90
@@ -16,16 +16,18 @@ class Oystercard
     @balance += money
   end
 
-  def touch_in
+  def touch_in(entry_station)
     raise "You need a minimum of £#{Oystercard::MINIMUM_BALANCE} on your card" if insufficient_funds?
     raise "You never touched out" if in_journey?
-    @in_journey = true if !in_journey?
+    @in_journey = true
+    @entry_station = entry_station
   end
 
   def touch_out
     raise "You have not touched in" if !in_journey?
     @in_journey = false
     deduct(FARE)
+    @entry_station = nil
   end
 
   private
@@ -39,7 +41,7 @@ class Oystercard
   end
 
   def in_journey?
-    @in_journey
+    @entry_station != nil
   end
 
   def deduct(money)

@@ -3,6 +3,7 @@ require "oystercard"
 describe Oystercard do
 
   subject(:oystercard) { Oystercard.new(5) }
+  let(:station) { double :station}
 
   describe "#top_up(money)" do
     it "increases the balance by 5 when top_up(5) is called" do
@@ -18,50 +19,51 @@ describe Oystercard do
     end
   end
 
-  describe "#touch_in" do
-    it "sets in_journey to true if successfully touched in" do
-      subject.touch_in
-      expect(subject.in_journey).to be true
-    end
+  describe "#touch_in(entry_station)" do
 
     it "raises an error if you are already in transit" do
-      subject.touch_in
-      expect { subject.touch_in }.to raise_error "You never touched out"
+      subject.touch_in(station)
+      expect { subject.touch_in(station) }.to raise_error "You never touched out"
     end
 
     it "raises an error if you do not have enough money" do
       message = "You need a minimum of £#{Oystercard::MINIMUM_BALANCE} on your card"
       card = Oystercard.new
-      expect { card.touch_in }.to raise_error message
+      expect { card.touch_in(station) }.to raise_error message
     end
 
     it "checks that balance has been reduced by fare when card touched out" do
-      subject.touch_in
+      subject.touch_in(station)
       expect {subject.touch_out}.to change{subject.balance}. by(-3)
+    end
+
+    it "records the entry station when touched in" do
+      subject.touch_in(station)
+      expect(subject.entry_station).to eq station
     end
   end
 
   describe "#touch_out" do
 
     before do
-      subject.touch_in
-    end
-
-    it "sets in_journey to false if successfully touched out" do
-      subject.touch_out
-      expect(subject.in_journey).to be false
+      subject.touch_in(station)
     end
 
     it "raises an error if not currently in transit" do
       subject.touch_out
       expect { subject.touch_out }.to raise_error "You have not touched in"
     end
+
+    it "forgets the entry station when touched out" do
+      subject.touch_out
+      expect(subject.entry_station).to eq nil
+    end
   end
 
   describe "#in_journey?" do
     it "returns true if you are currently in transit" do
-      subject.touch_in
-      expect(subject.in_journey).to be true
+      subject.touch_in(station)
+      expect(subject.entry_station).to eq station
     end
   end
 
