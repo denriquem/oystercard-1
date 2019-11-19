@@ -18,15 +18,6 @@ describe Oystercard do
     end
   end
 
-  describe "#deduct(money)" do
-    context "when starting with a balance at £20" do
-      it "returns a balance of £15 when £5 is deducted" do
-        card = Oystercard.new(20)
-        expect(card.deduct(5)).to eq 15
-      end
-    end
-  end
-
   describe "#touch_in" do
     it "sets in_journey to true if successfully touched in" do
       subject.touch_in
@@ -42,6 +33,11 @@ describe Oystercard do
       message = "You need a minimum of £#{Oystercard::MINIMUM_BALANCE} on your card"
       card = Oystercard.new
       expect { card.touch_in }.to raise_error message
+    end
+
+    it "checks that balance has been reduced by fare when card touched out" do
+      subject.touch_in
+      expect {subject.touch_out}.to change{subject.balance}. by(-3)
     end
   end
 
