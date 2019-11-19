@@ -6,7 +6,7 @@ describe Oystercard do
 
   describe "#top_up(money)" do
     it "increases the balance by 5 when top_up(5) is called" do
-      expect { subject.top_up(5) }. to change {subject.balance} .by(5)
+      expect { subject.top_up(5) }.to change { subject.balance }.by(5)
     end
 
     context "when starting with a balance at full limit" do
@@ -46,14 +46,17 @@ describe Oystercard do
   end
 
   describe "#touch_out" do
-    it "sets in_journey to false if successfully touched out" do
+
+    before do
       subject.touch_in
+    end
+
+    it "sets in_journey to false if successfully touched out" do
       subject.touch_out
       expect(subject.in_journey).to be false
     end
 
     it "raises an error if not currently in transit" do
-      subject.touch_in
       subject.touch_out
       expect { subject.touch_out }.to raise_error "You have not touched in"
     end
