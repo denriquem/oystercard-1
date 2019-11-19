@@ -7,8 +7,8 @@ describe Oystercard do
   let(:station2) { double :station2}
   let(:journey){ {entry_station: station, exit_station: station2} }
 
-  describe "#initialize" do
-    it 'checks that card has empty list of journeys by defualt' do
+  describe "#initial" do
+    it 'checks that card has empty list of journeys by default' do
       expect(subject.journeys_list).to eq []
     end
   end

@@ -7,7 +7,6 @@ class Oystercard
   MINIMUM_BALANCE = 1
   FARE = 3
 
-
   def initialize(balance = DEFAULT_BALANCE)
     @balance = balance
     @journeys_list = []
