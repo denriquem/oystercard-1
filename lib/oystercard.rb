@@ -29,7 +29,7 @@ class Oystercard
   def touch_out(station)
     @journey.add_exit_station(station)
     @journeys_list << journey.journey
-    deduct(FARE)
+    deduct(journey.fare)
   end
 
   private

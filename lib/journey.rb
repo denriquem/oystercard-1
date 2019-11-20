@@ -20,9 +20,9 @@ class Journey
 
   def fare
     if @journey[:entry_station] == nil || @journey[:exit_station] == nil
-      "6"
+      6
     else
-      "1"
+      1
     end
   end
   

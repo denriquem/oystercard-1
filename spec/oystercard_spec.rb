@@ -37,7 +37,7 @@ describe Oystercard do
     end
     
     it "checks that balance has been reduced by fare when card touched out" do
-      expect {subject.touch_out(station2)}.to change{subject.balance}. by(-3)
+      expect {subject.touch_out(station2)}.to change{subject.balance}. by(-1)
     end
     
     it "check if the journey was added to journey history" do
