@@ -5,7 +5,7 @@ describe Oystercard do
   subject(:oystercard) { Oystercard.new(5) }
   let(:station) { double :station}
   let(:station2) { double :station2}
-  let(:journey){ {entry_station: station, exit_station: station2} }
+  let(:journey) { {entry_station: station, exit_station: station2} }
 
   describe "#initial" do
     it 'checks that card has empty list of journeys by default' do
