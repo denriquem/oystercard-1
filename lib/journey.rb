@@ -18,5 +18,17 @@ class Journey
     @journey[:exit_zone] = station.zone
   end
 
-
+  def fare
+    if @journey[:entry_station] == nil || @journey[:exit_station] == nil
+      "6"
+    else
+      "1"
+    end
+  end
+  
+  private
+  
+  def in_journey?
+    @journey[:entry_station] != nil
+  end
 end

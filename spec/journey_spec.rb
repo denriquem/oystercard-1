@@ -28,4 +28,18 @@ describe Journey do
       expect(subject.journey[:exit_zone]).to eq station2.zone
     end
   end
+  
+  describe "#fare" do
+    
+    it "Returns the minimum fare" do 
+      subject.add_entry_station(station)
+      subject.add_exit_station(station2)
+      expect(subject.fare).to eq "1"
+    end
+    
+    
+    it "Returns the penalty fare" do 
+      expect(subject.fare).to eq "6"
+    end
+  end
 end

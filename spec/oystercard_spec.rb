@@ -6,12 +6,6 @@ describe Oystercard do
   let(:station) { double :station, name: :Tottenham, zone: 6}
   let(:station2) { double :station2, name: :Mile_end, zone: 2}
 
-  describe "#initialize" do
-    it 'checks that card has empty list of journeys by defualt' do
-      expect(subject.journeys_list).to eq []
-    end
-  end
-
   describe "#top_up(money)" do
     it "increases the balance by 5 when top_up(5) is called" do
       expect { subject.top_up(5) }.to change { subject.balance }.by(5)
@@ -28,26 +22,12 @@ describe Oystercard do
 
   describe "#touch_in(entry_station)" do
 
-    it "raises an error if you are already in transit" do
-      subject.touch_in(station)
-      expect { subject.touch_in(station) }.to raise_error "You never touched out"
-    end
-
     it "raises an error if you do not have enough money" do
       message = "You need a minimum of £#{Oystercard::MINIMUM_BALANCE} on your card"
       card = Oystercard.new
       expect { card.touch_in(station) }.to raise_error message
     end
 
-    it "checks that balance has been reduced by fare when card touched out" do
-      subject.touch_in(station)
-      expect {subject.touch_out(station2)}.to change{subject.balance}. by(-3)
-    end
-
-    it "records the entry station when touched in" do
-      subject.touch_in(station)
-      expect(subject.journey[:entry_station]).to eq station.name
-    end
   end
 
   describe "#touch_out(exit_station)" do
@@ -55,17 +35,14 @@ describe Oystercard do
     before do
       subject.touch_in(station)
     end
-
-    it "raises an error if not currently in transit" do
-      subject.touch_out(station2)
-      expect { subject.touch_out(station2) }.to raise_error "You have not touched in"
+    
+    it "checks that balance has been reduced by fare when card touched out" do
+      expect {subject.touch_out(station2)}.to change{subject.balance}. by(-3)
     end
-
-    it "forgets the whole journey when touched out" do
+    
+    it "check if the journey was added to journey history" do
       subject.touch_out(station2)
-      expect(subject.journey).to eq ({})
+      expect(subject.journeys_list).to include subject.journey.journey
     end
-
   end
-
 end
