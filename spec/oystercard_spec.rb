@@ -5,7 +5,6 @@ describe Oystercard do
   subject(:oystercard) { Oystercard.new(5) }
   let(:station) { double :station, name: :Tottenham, zone: 6}
   let(:station2) { double :station2, name: :Mile_end, zone: 2}
-  # let(:journey){ {entry_station: station, exit_station: station2} }
 
   describe "#initialize" do
     it 'checks that card has empty list of journeys by defualt' do
