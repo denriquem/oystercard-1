@@ -6,7 +6,7 @@ describe Oystercard do
   subject(:oystercard) { Oystercard.new(5) }
   let(:station) { double :station, name: :Tottenham, zone: 6}
   let(:station2) { double :station2, name: :Mile_end, zone: 2}
-  let(:journey){ {entry_station: station, exit_station: station2} }
+  let(:journey) { {entry_station: station, exit_station: station2} }
 
   describe "#initialize" do
     it 'checks that card has empty list of journeys by defualt' do
@@ -46,11 +46,11 @@ describe Oystercard do
       expect {subject.touch_out(station2)}.to change{subject.balance}. by(-3)
     end
 
-    it "records the entry station when touched in" do
-      subject.touch_in(station)
-      expect(subject.entry_station).to eq station
-    end
-  end
+  #   it "records the entry station when touched in" do
+  #     subject.touch_in(station)
+  #     expect(subject.entry_station).to eq station
+  #   end
+   end
 
   describe "#touch_out(exit_station)" do
 
@@ -63,10 +63,10 @@ describe Oystercard do
       expect { subject.touch_out(station2) }.to raise_error "You have not touched in"
     end
 
-    it "forgets the entry station when touched out" do
-      subject.touch_out(station2)
-      expect(subject.entry_station).to eq nil
-    end
+    # it "forgets the entry station when touched out" do
+    #   subject.touch_out(station2)
+    #   expect(subject.entry_station).to eq nil
+    # end
 
     it "checks that one journey created after touching out" do
       subject.touch_out(station2)
